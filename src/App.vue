@@ -14,6 +14,8 @@ import { invoke } from "@tauri-apps/api/core";
 
 <template>
   <main class="container">
-    <h1 class="text-3xl font-bold underline">AEMI Game Launcher</h1>
+    <section class="flex items-center justify-center bg-linear-to-b from-slate-800 to-slate-950 w-screen h-screen static">
+      <img src="/src/assets/aemi-logo-landscape-black.svg" alt="aemi-logo" class="absolute invert right-1/10 w-[40vw] h-auto"> <!-- TODO à remplacer par un logo sans texte-->
+    </section>
   </main>
 </template>
