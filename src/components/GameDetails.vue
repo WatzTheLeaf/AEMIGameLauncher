@@ -1,13 +1,22 @@
 <script setup>
+import { computed } from "vue";
 
+const props = defineProps({
+    game: Object
+});
+
+const parsedAuthors = computed(() => {
+    if (!props.game || !props.game.authors) return "Auteurs inconnus";
+    return "Par : " + props.game.authors.join(", ");
+});
 </script>
 
 <template>
     <div class="h-2/3 p-4 m-8 flex w-1/2 bg-slate-950/80 rounded-4xl text-slate-200 flex-col justify-center">
-        <h1 class="text-5xl m-5">Lorem Ipsum</h1>
-        <h1 class="text-3xl m-5">Par : XXXXXXX, YYYYYYY, ZZZZZZZZZZZZZ</h1>
+        <h1 class="text-5xl m-5">{{game.name}}</h1>
+        <h2 class="text-3xl m-5">{{parsedAuthors}}</h2>
         <div class="flex m-5 max-h-55/100 relative items-center flex-wp justify-evenly">
-            <p class="text-lg flex-1 text-justify overflow-hidden max-h-full text-overflow-wrap the-p">0845633483454116882138652220338621669235003026522087797107923466708735091807580366573520416241326132251782939518712990937279102623785712299223188310489472029003784803286446047862428427954095909714921931600049452118862929006077041014486600422050097985485948925833669488214926981815865267800844061152432449447616189125654897049543275417742017715258304822644884656257588043594146309255733377669459347732227143783046187904955954152595384319135966283594918734045544257732767108937475078633688298446112413399270378404975101690275310543330926870026717589044912395110114152469691094524410852532222938534420111286337162961083176908915590711760535672212151774636796501546467428854340053654209418614470186842982</p>
+            <p class="text-lg flex-1 text-justify overflow-hidden max-h-full text-overflow-wrap the-p">{{ game.description }}</p>
         </div>
         <h1 class="text-5xl m-5">TAG1 TAG2 TAG3</h1>
     </div>
@@ -15,8 +24,8 @@
 
 <style>
 .the-p{
-    word-wrap: break-word;      /* IE 5.5-7 */
-    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
-    white-space: pre-wrap;      /* current browsers */
+    word-wrap: break-word;
+    white-space: -moz-pre-wrap;
+    white-space: pre-wrap;
 }
 </style>

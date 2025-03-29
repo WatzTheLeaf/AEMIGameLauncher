@@ -1,27 +1,25 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import Game from "./Game.vue";
-import { invoke } from "@tauri-apps/api/core";
 
-const games = ref([
-    { id: 1, name: "Zelda", image: "/src/assets/zelda.jpg" },
-    { id: 2, name: "Mario Kart", image: "/src/assets/mariokart.jpg" },
-    { id: 3, name: "Metroid", image: "/src/assets/metroid.jpg" },
-]);
+const props = defineProps({
+    games: Array,
+    activeGameId: Number
+});
 
-const activeGameId = ref(games.value[0].id);
+const emit = defineEmits(["update:activeGameId"]);
 
-const activeGame = computed(() => games.value.find(game => game.id === activeGameId.value));
+const activeGame = computed(() => props.games.find(game => game.id === props.activeGameId));
 
-const canNavigateUp = computed(() => games.value.findIndex(game => game.id === activeGameId.value) > 0);
-const canNavigateDown = computed(() => games.value.findIndex(game => game.id === activeGameId.value) < games.value.length - 1);
+const canNavigateUp = computed(() => props.games.findIndex(game => game.id === props.activeGameId) > 0);
+const canNavigateDown = computed(() => props.games.findIndex(game => game.id === props.activeGameId) < props.games.length - 1);
 
 const navigateGames = (direction) => {
-    const currentIndex = games.value.findIndex(game => game.id === activeGameId.value);
+    const currentIndex = props.games.findIndex(game => game.id === props.activeGameId);
     if (direction === "up" && canNavigateUp.value) {
-        activeGameId.value = games.value[currentIndex - 1].id;
+        emit("update:activeGameId", props.games[currentIndex - 1].id);
     } else if (direction === "down" && canNavigateDown.value) {
-        activeGameId.value = games.value[currentIndex + 1].id;
+        emit("update:activeGameId", props.games[currentIndex + 1].id);
     }
 };
 
@@ -38,7 +36,7 @@ onUnmounted(() => window.removeEventListener("keydown", handleKeyDown));
     <div class="h-full p-4 w-2/5 overflow-y-auto text-center flex flex-col justify-center items-center">
         <div v-if="canNavigateUp" class="text-2xl cursor-pointer mb-2 text-slate-50" @click="navigateGames('up')">▲</div>
         <div v-else class="text-2xl cursor-pointer mb-2 text-slate-50">‎</div>
-        
+
         <Game v-if="activeGame" :game="activeGame" />
 
         <div v-if="canNavigateDown" class="text-2xl cursor-pointer mt-2 text-slate-50" @click="navigateGames('down')">▼</div>
