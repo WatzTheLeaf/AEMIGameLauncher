@@ -1,5 +1,6 @@
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
+import Tag from "./Tag.vue";
 
 const props = defineProps({
     game: Object
@@ -9,6 +10,15 @@ const parsedAuthors = computed(() => {
     if (!props.game || !props.game.authors) return "Auteurs inconnus";
     return "Par : " + props.game.authors.join(", ");
 });
+
+const tags = ref([
+{ id: 1, name: "Horreur", color: "bg-red-800"},
+{ id: 2, name: "Jeu de role", color: "bg-amber-600"},
+{ id: 3, name: "WonderJam", color: "bg-emerald-900"},
+{ id: 4, name: "Primé", color: "bg-yellow-500"},
+{ id: 5, name: "Multijoueur", color: "bg-indigo-500"},
+]);
+
 </script>
 
 <template>
@@ -18,7 +28,14 @@ const parsedAuthors = computed(() => {
         <div class="flex m-5 max-h-55/100 relative items-center flex-wp justify-evenly">
             <p class="text-lg flex-1 text-justify overflow-hidden max-h-full text-overflow-wrap the-p">{{ game.description }}</p>
         </div>
-        <h1 class="text-5xl m-5">TAG1 TAG2 TAG3</h1>
+        <div class="flex flex-wrap overflow-hidden">
+            <!-- 5 TAGS MAXIMUM -->
+            <Tag :tag="tags[0]"/>
+            <Tag :tag="tags[1]"/>
+            <Tag :tag="tags[2]"/>
+            <Tag :tag="tags[3]"/>
+            <Tag :tag="tags[4]"/>
+        </div>
     </div>
 </template>
 
