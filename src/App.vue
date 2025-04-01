@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import GameBar from "./components/GameBar.vue";
 import GameDetails from "./components/GameDetails.vue";
@@ -24,17 +24,41 @@ const activeGameId = ref(games.value[0].id);
 
 const activeGame = computed(() => games.value.find(game => game.id === activeGameId.value));
 
+const isNavigating = ref(true);
+
+const navigate = () => {
+  isNavigating.value = true;
+};
+
+const readDetails = () => {
+  isNavigating.value = false;
+};
+
+const handleKeyDown = (event) => {
+  if (event.key === "ArrowLeft") navigate();
+  if (event.key === "ArrowRight") readDetails();
+};
+
+onMounted(() => window.addEventListener("keydown", handleKeyDown));
+onUnmounted(() => window.removeEventListener("keydown", handleKeyDown));
+
 </script>
 
 <template>
   <main class="container">
     <section class="flex items-center justify-center bg-linear-to-b from-slate-800 to-slate-950 w-screen h-screen static" id="csbp">
-      <div class="flex w-full h-full justify-evenly items-center">
-        <GameBar class="z-20 backdrop-blur-md" v-model:activeGameId="activeGameId" :games="games" />
-        <GameDetails class="z-20 backdrop-blur-md top-2/7" :game="activeGame" />
+      <div class="flex w-full h-full items-center" :class="{'justify-evenly': isNavigating, 'justify-center': !isNavigating}">
+        <div v-if="!isNavigating" class="text-5xl cursor-pointer mb-2 text-slate-50">◂</div>
+        <GameBar v-if="isNavigating" class="z-20" v-model:activeGameId="activeGameId" :games="games" />
+        <GameDetails class="z-20 backdrop-blur-xl top-2/7" :game="activeGame" />
+        <div v-if="isNavigating" class="text-5xl cursor-pointer mb-2 text-slate-50">▸</div>
       </div>
       <img src="/src/assets/aemi-logo-landscape-black.svg" alt="aemi-logo" class="absolute invert right-1/10 w-[40vw] h-auto">
-      <!-- <img :src="activeGame.image" alt="csb" class="absolute h-screen w-screen z-5 blur-[300px]" id="color-shift-blur"> -->
+      <img v-if="activeGame" :src="activeGame.image" alt="csb" class="absolute h-screen w-screen z-5 blur-[2px] transition-opacity duration-1000" :class="{'opacity-0': isNavigating, 'opacity-100': !isNavigating}">
     </section>
   </main>
 </template>
+
+.transition-opacity {
+  transition: opacity 2s;
+}

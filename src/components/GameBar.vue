@@ -41,7 +41,7 @@ onUnmounted(() => window.removeEventListener("keydown", handleKeyDown));
     <div class="h-full p-4 w-2/5 text-center overflow-y-hidden flex flex-col justify-center items-center">
 
         <Game v-if="previousGame" :game="previousGame" class="w-1/3 opacity-50"/>
-        <Game v-else="previousGame" :game="nullGame" class="w-1/3 opacity-0"/>
+        <Game v-else :game="nullGame" class="w-1/3 opacity-0"/>
 
         <div v-if="canNavigateUp" class="text-2xl cursor-pointer mb-2 text-slate-50" @click="navigateGames('up')">▲</div>
         <div v-else class="text-2xl cursor-pointer mb-2 text-slate-50">‎</div>
@@ -52,7 +52,7 @@ onUnmounted(() => window.removeEventListener("keydown", handleKeyDown));
         <div v-else class="text-2xl cursor-pointer mt-2 text-slate-50">‎</div>
 
         <Game v-if="nextGame" :game="nextGame" class="w-1/3 opacity-50"/>
-        <Game v-else="nextGame" :game="nullGame" class="w-1/3 opacity-0"/>
+        <Game v-else :game="nullGame" class="w-1/3 opacity-0"/>
 
     </div>
 </template>
