@@ -5,13 +5,23 @@ import GameBar from "./components/GameBar.vue";
 import GameDetails from "./components/GameDetails.vue";
 
 async function retrieveGames() {
-  let configMsg = await invoke("retrieve_games");
-  console.log(configMsg);
+  try {
+    let configMsg = await invoke("retrieve_games");
+    let games = JSON.parse(configMsg);
+    console.log("Jeux récupérés :", games);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des jeux :", error);
+  }
 }
 
 async function retrieveTags() {
-  let configMsg = await invoke("retrieve_tags");
-  console.log(configMsg);
+  try {
+    let configMsg = await invoke("retrieve_tags");
+    let tags = JSON.parse(configMsg);
+    console.log("Tags récupérés :", tags);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des tags :", error);
+  }
 }
 
 document.body.onload = () => {retrieveGames(); retrieveTags();}

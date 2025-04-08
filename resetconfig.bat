@@ -1,0 +1,1 @@
+RMDIR /s /q .\src-tauri\AEMIGameLauncherConfig\

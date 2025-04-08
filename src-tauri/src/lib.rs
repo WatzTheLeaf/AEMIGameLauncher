@@ -60,7 +60,7 @@ fn create_json_template(games_dir: &str, blank_file_path: &str) {
 }
 
 fn create_tag_config_file(tag_config_file_path: &str) {
-    let default_json = r#"{[]}"#;
+    let default_json = r#"[{"name":"blank", "color":"bg-red-800"}]"#;
     if ! exists(tag_config_file_path).expect("Failed to check config file") {
         let mut file = File::create(tag_config_file_path).expect("Failed to create tags.conf.json");
         file.write_all(default_json.as_bytes())
