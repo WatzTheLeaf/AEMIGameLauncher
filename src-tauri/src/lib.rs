@@ -36,13 +36,15 @@ pub fn run() {
 
 pub fn init() {
     let config_dir = "./AEMIGameLauncherConfig";
-    let games_dir = format!("{}/Games", config_dir);
-    let blank_file_path = format!("{}/G_blank.json", games_dir);
+    let games_config_dir = format!("{}/Games", config_dir);
+    let games_dir = "./Apps";
+    let blank_file_path = format!("{}/G_blank.json", games_config_dir);
     let tag_config_file_path = format!("{}/tags.conf.json", config_dir);
 
     create_config_dir(config_dir);
-    create_games_dir(&games_dir);
-    create_game_json_template(&games_dir, &blank_file_path);
+    create_games_dir(games_dir);
+    create_games_config_dir(&games_config_dir);
+    create_game_json_template(&games_config_dir, &blank_file_path);
     create_tag_config_file(&tag_config_file_path);
 }
 
@@ -68,10 +70,18 @@ fn create_tag_config_file(tag_config_file_path: &str) {
     }
 }
 
-fn create_games_dir(games_dir: &String) {
+fn create_games_config_dir(games_config_dir: &String) {
+    if let Err(_) = create_dir(&games_config_dir) {
+        if !Path::new(&games_config_dir).exists() {
+            panic!("Games config folder does not exist and could not be created.");
+        }
+    }
+}
+
+fn create_games_dir(games_dir: &str) {
     if let Err(_) = create_dir(&games_dir) {
         if !Path::new(&games_dir).exists() {
-            panic!("");
+            panic!("Games config folder does not exist and could not be created.");
         }
     }
 }
