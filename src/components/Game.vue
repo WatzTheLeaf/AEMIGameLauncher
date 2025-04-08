@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from "vue";
-import { invoke } from "@tauri-apps/api/core";
 
 defineProps({
     game: Object,
