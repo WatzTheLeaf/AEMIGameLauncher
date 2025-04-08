@@ -42,16 +42,16 @@ pub fn init() {
 
     create_config_dir(config_dir);
     create_games_dir(&games_dir);
-    create_json_template(&games_dir, &blank_file_path);
+    create_game_json_template(&games_dir, &blank_file_path);
     create_tag_config_file(&tag_config_file_path);
 }
 
-fn create_json_template(games_dir: &str, blank_file_path: &str) {
+fn create_game_json_template(games_dir: &str, blank_file_path: &str) {
     let is_games_dir_empty = read_dir(games_dir)
         .map(|mut dir| dir.next().is_none())
         .unwrap_or(false);
 
-    if is_games_dir_empty || !Path::new(blank_file_path).exists() {
+    if is_games_dir_empty {
         let default_json = r#"{"executable_path": "","preview_image": "","name": "","description": "","authors": [],"tags": []}"#;
         let mut file = File::create(blank_file_path).expect("Failed to create G_blank.json");
         file.write_all(default_json.as_bytes())
