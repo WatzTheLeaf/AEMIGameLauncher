@@ -52,7 +52,7 @@ fn create_game_json_template(games_dir: &str, blank_file_path: &str) {
         .unwrap_or(false);
 
     if is_games_dir_empty {
-        let default_json = r#"{"executable_path": "","preview_image": "","name": "","description": "","authors": [],"tags": []}"#;
+        let default_json = r#"{"executable_path": "","preview_image": "","name": "","description": "","authors": [],"tags": ["blank"]}"#;
         let mut file = File::create(blank_file_path).expect("Failed to create G_blank.json");
         file.write_all(default_json.as_bytes())
             .expect("Failed to write to G_blank.json");

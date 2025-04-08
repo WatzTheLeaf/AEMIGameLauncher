@@ -16,7 +16,8 @@ async function retrieveGames() {
       name: game.name || `Jeu inconnu`,
       image: game.preview_image || '/src/assets/blank.jpg',
       description: game.description || 'Aucune description.',
-      authors: game.authors && game.authors.length ? game.authors : ['Inconnu']
+      authors: game.authors && game.authors.length ? game.authors : ['Inconnu'],
+      tags: game.tags || []
     }));
     if (games.value.length > 0) {
       activeGameId.value = games.value[0].id;

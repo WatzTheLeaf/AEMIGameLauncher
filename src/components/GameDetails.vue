@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import Tag from "./Tag.vue";
 
 const props = defineProps({
   game: Object
@@ -12,11 +13,18 @@ const parsedAuthors = computed(() => {
 });
 
 const tags = ref([]);
+const filteredTags = computed(() => {
+  if (!props.game || !props.game.tags) return [];
+  return tags.value
+    .filter(tag => props.game.tags.includes(tag.name))
+    .slice(0, 5);
+});
+
 async function retrieveTags() {
   try {
     const tagsData = await invoke("retrieve_tags");
     const parsedTags = JSON.parse(tagsData);
-    tags.value = parsedTags.slice(0, 5).map(tag => ({
+    tags.value = parsedTags.map(tag => ({
       name: tag.name,
       color: tag.color || "bg-slate-700"
     }));
@@ -29,7 +37,6 @@ async function retrieveTags() {
 onMounted(() => {
   retrieveTags();
 });
-
 </script>
 
 <template>
@@ -40,7 +47,7 @@ onMounted(() => {
       <p class="text-lg flex-1 text-justify overflow-hidden max-h-full text-overflow-wrap the-p">{{ game.description }}</p>
     </div>
     <div class="flex flex-wrap overflow-hidden gap-2 px-4">
-        <!-- ADD TAGS HERE (5 max)-->
+      <Tag v-for="tag in filteredTags" :key="tag.name" :tag="tag" />
     </div>
   </div>
 </template>
